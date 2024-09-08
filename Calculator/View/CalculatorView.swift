@@ -9,8 +9,7 @@ import SwiftUI
 
 struct CalculatorView: View {
     
-    @State private var number: String = "0"
-    var viewModel = CalculatorViewModel()
+    @ObservedObject var viewModel = CalculatorViewModel()
     
     var body: some View {
         ZStack {
@@ -20,9 +19,10 @@ struct CalculatorView: View {
                 
                 HStack {
                     Spacer()
-                    Text("\(number)")
+                    Text("\(viewModel.displayNumber)")
                         .font(.system(size: 80))
                         .foregroundStyle(.white)
+                        .lineLimit(1)
                 }
                 .padding()
                 
@@ -30,7 +30,7 @@ struct CalculatorView: View {
                     HStack(spacing: 10) {
                         ForEach(button, id: \.self) { item in
                             Button {
-                                
+                                viewModel.calculate(button: item)
                             } label: {
                                 if item == .zero {
                                     Text(item.rawValue)
@@ -67,11 +67,6 @@ struct CalculatorView: View {
     
     private func buttonHeight() -> CGFloat {
         return (UIScreen.main.bounds.width - (5 * 14)) / 4
-    }
-    
-    private func calculate(button: CalculatorButtons) {
-        
-        
     }
 }
 
